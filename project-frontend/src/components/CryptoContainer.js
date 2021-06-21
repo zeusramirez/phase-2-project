@@ -4,7 +4,7 @@ import WatchContainer from './WatchContainer'
 import CryptoTable from './CryptoTable'
 import Cryptos from './Cryptos'
 
-const key = "3548273706736fa15fcc08e8983e328278635ca6"
+const key = "API KEY GOES HERE"
 
 function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
