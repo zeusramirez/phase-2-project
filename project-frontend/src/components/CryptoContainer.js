@@ -4,13 +4,15 @@ import CryptoTable from './CryptoTable'
 import Cryptos from './Cryptos'
 import Header from './Header'
 
-const key = "3548273706736fa15fcc08e8983e328278635ca6"
+const key = "API KEY GOES"
 
 function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
 let [cryptoData, setData] = useState([])
 let [trackedCryptos, setTracked] = useState([])
 let [query, setQuery] = useState("")
+let [usernames, setUsernames] = useState([])
+let [currentUser, setCurrentUser] = useState("")
 
     function handlePageNumber(e) {
         let value = e.target.value
@@ -35,6 +37,15 @@ let [query, setQuery] = useState("")
         .then(data => setTracked(data))
     },[])
 
+    useEffect(() => {
+        fetch("http://localhost:3000/users")
+        .then(res => res.json())
+        .then(data => {
+            let justNames = data.map(user => user.name)
+            setUsernames(justNames)
+        })
+    },[])
+
 function addToWatchList(props) {
     fetch("http://localhost:3000/cryptos",{
         method: "POST",
@@ -43,6 +54,7 @@ function addToWatchList(props) {
     })
     .then(res => res.json())
     .then(data => setTracked([...trackedCryptos, data]))
+    // .catch(() => console.log("uh oh"))
 }
 
 function deleteFromWatchlist(id) {
@@ -59,6 +71,21 @@ function deleteFromWatchlist(id) {
     })
 }
 
+function addUser(name) {
+    if (usernames.includes(name)) console.log("user already Exists");
+    else
+    fetch("http://localhost:3000/users", {
+        method:"POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            "name": name
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        setUsernames([...usernames, name])
+    })
+}
 
 let filteredCryptos = cryptoData.filter(crypto => crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase()))
 
@@ -66,7 +93,7 @@ let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...cry
 
     return(
         <div>
-            <Header query={query} setQuery={setQuery}/>
+            <Header query={query} setQuery={setQuery} usernames={usernames} addUser={addUser} />
             {pageNumber > 1 || query !== "" ? null:(<WatchContainer trackedCryptos={trackedCryptos} deleteFromWatchlist={deleteFromWatchlist}/>)}
             <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
             <br></br>

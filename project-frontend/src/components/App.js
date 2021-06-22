@@ -4,7 +4,7 @@ import {Route, Switch} from 'react-router-dom'
 function App() {
   return (
     <Switch>
-      <Route exact path="/home" component={CryptoContainer}/>
+      <Route exact path="/" component={CryptoContainer}/>
       <Route path="/details/:id" component={CryptoDetails}/>
     </Switch>
   );
