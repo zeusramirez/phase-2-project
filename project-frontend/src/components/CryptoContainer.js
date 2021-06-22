@@ -3,13 +3,15 @@ import React, {useEffect, useState} from 'react'
 import WatchContainer from './WatchContainer'
 import CryptoTable from './CryptoTable'
 import Cryptos from './Cryptos'
+import Header from './Header'
 
-const key = "API KEY GOES HERE"
+const key = "3548273706736fa15fcc08e8983e328278635ca6"
 
 function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
 let [cryptoData, setData] = useState([])
 let [trackedCryptos, setTracked] = useState([])
+let [query, setQuery] = useState("")
 
     function handlePageNumber(e) {
         let value = e.target.value
@@ -28,10 +30,14 @@ let [trackedCryptos, setTracked] = useState([])
         .then(data => setData(data))
     },[pageNumber])
 
-let cryptoArray = cryptoData.map(crypto => <Cryptos key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
+    useEffect(()=> {
+        fetch("http://localhost:3000/cryptos")
+        .then(res => res.json())
+        .then(data => setTracked(data))
+    },[])
 
 function addToWatchList(props) {
-    fetch("http://localhost:3001/cryptos",{
+    fetch("http://localhost:3000/cryptos",{
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(props)
@@ -40,10 +46,29 @@ function addToWatchList(props) {
     .then(data => setTracked([...trackedCryptos, data]))
 }
 
+function deleteFromWatchlist(id) {
+    fetch(`http://localhost:3000/cryptos/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then (() => {
+        let updatedWatchlist = trackedCryptos.filter(crypto => crypto.id !== id)
+        setTracked(updatedWatchlist)
+    })
+}
+
+
+let filteredCryptos = cryptoData.filter(crypto => crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase()))
+
+let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
+
     return(
         <div>
-            <h1 style={{textDecorationLine: "underline"}}>Coin Tracker</h1>
-            <WatchContainer trackedCryptos={trackedCryptos}/>
+            <Header query={query} setQuery={setQuery}/>
+            {pageNumber > 1 || query !== "" ? null:(<WatchContainer trackedCryptos={trackedCryptos} deleteFromWatchlist={deleteFromWatchlist}/>)}
             <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
         </div>
     )

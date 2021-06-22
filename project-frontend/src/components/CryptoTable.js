@@ -4,6 +4,7 @@ function CryptoTable(props) {
     const {pageNumber, handlePageNumber, cryptoArray} = props
     return (
         <div>
+            <h2>All Coins</h2>
             <table style={{width:"100%"}}>
             <tbody>
                 <tr>

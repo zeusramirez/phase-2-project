@@ -1,7 +1,7 @@
 import React from "react";
 function WatchList(props) {
 
-    const {rank, currency, name, price, logo_url, market_cap, addToWatchList } = props
+    const {rank, currency, name, price, logo_url, market_cap, deleteFromWatchlist, id } = props
 
     return(
     <tr>
@@ -11,7 +11,7 @@ function WatchList(props) {
         <td>{props["1d"].price_change_pct * 100}%</td>
         <td>{market_cap}</td>
         <td>{props["1d"].volume}</td>
-        <td><button onClick={() => addToWatchList(props)}>Add to WatchList</button></td>
+        <td><button onClick={() => deleteFromWatchlist(id)}>Remove from WatchList</button></td>
     </tr>
     )
 }
