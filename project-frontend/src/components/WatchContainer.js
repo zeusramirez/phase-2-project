@@ -2,7 +2,6 @@ import React from 'react'
 import WatchList from './WatchList'
 
 function WatchContainer(props) {
-console.log(props.trackedCryptos)
 
  let trackedCryptos = props.trackedCryptos.map(crypto => <WatchList key={crypto.id} {...crypto} deleteFromWatchlist={props.deleteFromWatchlist}/>)
 

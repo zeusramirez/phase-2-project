@@ -1,11 +1,12 @@
-import '../App.css';
 import CryptoContainer from './CryptoContainer';
-
+import CryptoDetails from './CryptoDetails';
+import {Route, Switch} from 'react-router-dom'
 function App() {
   return (
-    <div className="App">
-      <CryptoContainer/>
-    </div>
+    <Switch>
+      <Route exact path="/home" component={CryptoContainer}/>
+      <Route path="/details/:id" component={CryptoDetails}/>
+    </Switch>
   );
 }
 
