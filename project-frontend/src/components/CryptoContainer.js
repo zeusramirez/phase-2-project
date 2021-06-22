@@ -69,6 +69,8 @@ let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...cry
             <Header query={query} setQuery={setQuery}/>
             {pageNumber > 1 || query !== "" ? null:(<WatchContainer trackedCryptos={trackedCryptos} deleteFromWatchlist={deleteFromWatchlist}/>)}
             <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
+            <br></br>
+            <a href="https://nomics.com/">Crypto Market Cap And Pricing Data Provided By Nomics.</a>
         </div>
     )
 }
