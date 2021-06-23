@@ -2,12 +2,14 @@ import React from 'react'
 import WatchList from './WatchList'
 
 function WatchContainer(props) {
+const {user} = props
+ let trackedCryptos = props.watchArray.map(crypto => <WatchList key={crypto.id} {...crypto} deleteFromWatchlist={props.deleteFromWatchlist}/>)
 
- let trackedCryptos = props.trackedCryptos.map(crypto => <WatchList key={crypto.id} {...crypto} deleteFromWatchlist={props.deleteFromWatchlist}/>)
+ //let listOwner = `${props.user}'s`
 
     return(
         <div>
-            <h2>Watchlisted Coins</h2>
+            <h2>{user === "" ? null: (`${user}'s`)} Watchlisted Coins</h2>
             <table style={{width:"100%"}}>
                 <tbody>
                     <tr>

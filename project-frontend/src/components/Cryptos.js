@@ -12,7 +12,7 @@ function Cryptos(props) {
            <td>{props["1d"].price_change_pct * 100}%</td>
            <td>{market_cap}</td>
            <td>{props["1d"].volume}</td>
-           <td><button onClick={() => addToWatchList(props)}>Add to WatchList</button></td>
+           <td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>
        </tr>
     )
 }
