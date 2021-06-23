@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function Header({ query, setQuery, users, addSetUser, logOut }) {
+function Header({ query, setQuery, users, addSetUser, logOut, loggedIn }) {
 
     const [name, setName] = useState("")
 
@@ -18,15 +18,15 @@ function Header({ query, setQuery, users, addSetUser, logOut }) {
     return (
         <>
             <h1 style={{textDecorationLine: "underline"}}>Coin Tracker</h1>
-            <form onSubmit={e => handleSubmit(e)} name="user-login">
+            {loggedIn ? (<button type="button" onClick={() => logOut()}>Log Out</button>):(<form onSubmit={e => handleSubmit(e)} name="user-login">
                 <label>User Login</label>
                 <input list="users" type="text" placeholder="Login To See List" value={name} onChange={e => setName(e.target.value)}></input>
                     <datalist id="users">
                         {usernameOptionTags}
                     </datalist>
                 <button type="submit">Log In</button>
-            </form>
-            <button type="button" onClick={() => logOut()}>Log Out</button>
+            </form>)
+            }
             <br></br>
             <form name="crypto-search" >
                 <label>Crypto Seach</label>

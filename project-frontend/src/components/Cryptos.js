@@ -1,8 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import WatchList from './WatchList'
 
 function Cryptos(props) {
-    const {rank, currency, name, price, logo_url, market_cap, addToWatchList, id } = props
+    const {rank, currency, name, price, logo_url, market_cap, addToWatchList, id, watchlist } = props
 
     let priceNum = parseFloat(price)
     let dayChange = parseFloat(props["1d"].price_change_pct * 100)
@@ -34,7 +35,8 @@ function Cryptos(props) {
            <td>{dayChange.toFixed(2)}%</td>
            <td>${numberAbbreviation(marketCap)}</td>
            <td>${numberAbbreviation(volume)}</td>
-           <td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>
+           {watchlist.includes(currency) ? null:(<td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>)
+           }
        </tr>
     )
 }

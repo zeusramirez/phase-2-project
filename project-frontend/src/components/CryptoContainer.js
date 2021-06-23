@@ -10,6 +10,7 @@ function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
 // our array of Cryptos from the API
 let [cryptoData, setData] = useState([])
+let [allData, setAllData] = useState([])
 let [query, setQuery] = useState("")
 let [users, setUsers] = useState([])
 let [currentUser, setCurrentUser] = useState("")
@@ -27,6 +28,11 @@ let [isLoggedIn, setLoggedIn] = useState(false)
             document.documentElement.scrollTop = 0;
         }
     }
+    useEffect(()=> {
+        fetch(`https://api.nomics.com/v1/currencies/ticker?key=${key}`)
+        .then(res => res.json())
+        .then(data => setAllData(data))
+    },[])
 
     useEffect(()=> {
         fetch(`https://api.nomics.com/v1/currencies/ticker?key=${key}&per-page=100&page=${pageNumber}`)
@@ -153,27 +159,38 @@ function logOut() {
 // console.log(currentUser)
 
 //filtering the cryptos when a search query is made
-let filteredCryptos = cryptoData.filter(crypto => crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase()))
 
+let filteredCryptos = []
+if (query !== "") {
+    allData.forEach(crypto => {
+        if (crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase())) {
+            filteredCryptos.push(crypto)
+        }
+    })
+}
+console.log(filteredCryptos)
 
 let watchArray = []
 watchlist.forEach(currency => {
-    cryptoData.forEach(coin => {
+    allData.forEach(coin => {
         if (coin.currency === currency) {
             watchArray.push(coin)
         }
     })   
 })
 
-// console.log(watchArray)
+let cryptoArray = cryptoData.map(crypto => <Cryptos watchlist={watchlist} key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
 
-let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
+let filteredCryptosWithComponents = filteredCryptos.map(crypto => <Cryptos watchlist={watchlist} key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
+ 
 
+let displayedCryptos = query !== "" ? "search!" : cryptoArray
+console.log(displayedCryptos)
     return(
         <div>
-            <Header query={query} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut}/>
+            <Header loggedIn={isLoggedIn} query={query} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut}/>
             {pageNumber > 1 || query !== "" || userId === 0 ? null:(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
-            <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
+            <CryptoTable cryptoArray={displayedCryptos} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
             <br></br>
             <a href="https://nomics.com/">Crypto Market Cap And Pricing Data Provided By Nomics.</a>
         </div>
