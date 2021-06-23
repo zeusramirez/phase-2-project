@@ -15,6 +15,7 @@ let [users, setUsers] = useState([])
 let [currentUser, setCurrentUser] = useState("")
 let [userId, setCurrentId] = useState(0)
 let [watchlist, setWatchlist] = useState([])
+let [isLoggedIn, setLoggedIn] = useState(false)
 
     function handlePageNumber(e) {
         let value = e.target.value
@@ -37,29 +38,40 @@ let [watchlist, setWatchlist] = useState([])
     //     fetch("http://localhost:3000/user/{}")
     //     .then(res => res.json())
     //     .then(data => setTracked(data))
-    // },[currentUser])
+    // },[isLoggedIn])
 
     useEffect(() => {
         fetch("http://localhost:3000/users")
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             setUsers(data)
-        })
-    },[])
-
-    
-    function addToWatchList(currency) {
-        fetch(`http://localhost:3000/users/${userId}`,{
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                "watchlist": [...watchlist, currency]
+            data.forEach(user => {
+                if (user.loggedIn) {
+                    setCurrentUser(user.name)
+                    setCurrentId(user.id)
+                    setWatchlist(user.watchlist)
+                }
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            setWatchlist(data.watchlist)
-        })
+    },[isLoggedIn])
+
+    
+    
+    function addToWatchList(currency) {
+        if (!watchlist.includes(currency)) {
+            fetch(`http://localhost:3000/users/${userId}`,{
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    "watchlist": [...watchlist, currency]
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                setWatchlist(data.watchlist)
+            })
+        }
     }
     
     function deleteFromWatchlist(id) {
@@ -80,13 +92,26 @@ let [watchlist, setWatchlist] = useState([])
     
 let usernames = users.map(users => users.name)
 
-    function addSetUser(name) {
+function addSetUser(name) {
         if (usernames.includes(name)) {
-            setCurrentUser(name);
-            users.map(user => {
+            // setCurrentUser(name);
+            users.forEach(user => {
                 if (user.name === name) {
-                    setWatchlist(user.watchlist)
-                    setCurrentId(user.id)
+                    fetch(`http://localhost:3000/users/${user.id}`, {
+                        method:"PATCH",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            "loggedIn": true
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(() => {
+                        // setUsers([...users, data.name])
+                        // setCurrentUser(data.name)
+                        // setWatchlist(data.watchlist)
+                        // setCurrentId(data.id)
+                        setLoggedIn(!isLoggedIn)
+                    })
                 }
             })
         }
@@ -96,19 +121,36 @@ let usernames = users.map(users => users.name)
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
             "name": name,
+            "loggedIn": true,
             "watchlist": []
         })
     })
     .then(res => res.json())
     .then((data) => {
-        setUsers([...users, data.name])
-        setCurrentUser(data.name)
-        setWatchlist(data.watchlist)
-        setCurrentId(data.id)
+        // setUsers([...users, data.name])
+        // setCurrentUser(data.name)
+        // setWatchlist(data.watchlist)
+        // setCurrentId(data.id)
+        setLoggedIn(!isLoggedIn)
     })
 }
 
-console.log(currentUser)
+function logOut() {
+    fetch(`http://localhost:3000/users/${userId}`, {
+        method:"PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            "loggedIn": false
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        setCurrentId(0)
+        setLoggedIn(!isLoggedIn)
+    })
+}
+
+// console.log(currentUser)
 
 //filtering the cryptos when a search query is made
 let filteredCryptos = cryptoData.filter(crypto => crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase()))
@@ -123,14 +165,14 @@ watchlist.forEach(currency => {
     })   
 })
 
-console.log(watchArray)
+// console.log(watchArray)
 
 let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...crypto} addToWatchList={addToWatchList}/>)
 
     return(
         <div>
-            <Header query={query} setQuery={setQuery} users={users} addSetUser={addSetUser} />
-            {pageNumber > 1 || query !== "" ? null:(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
+            <Header query={query} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut}/>
+            {pageNumber > 1 || query !== "" || userId === 0 ? null:(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
             <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
             <br></br>
             <a href="https://nomics.com/">Crypto Market Cap And Pricing Data Provided By Nomics.</a>
