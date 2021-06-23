@@ -1,17 +1,17 @@
 import { useState } from 'react'
 
-function Header({ query, setQuery, usernames, addUser }) {
+function Header({ query, setQuery, usernames, addSetUser }) {
 
     const [name, setName] = useState("")
 
     // function handleUser(name) {}
 
-    let usernameOptionTags = usernames.map(username => <option key={username} value={username} onSelect={e => handleUser(e)} />)
+    let usernameOptionTags = usernames.map(username => <option key={username} value={username} />)
 
     function handleSubmit(e) {
         e.preventDefault()
         let name = e.target[0].value
-        addUser(name)
+        addSetUser(name)
     }
 
 

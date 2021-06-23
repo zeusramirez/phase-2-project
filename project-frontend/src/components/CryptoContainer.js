@@ -4,7 +4,7 @@ import CryptoTable from './CryptoTable'
 import Cryptos from './Cryptos'
 import Header from './Header'
 
-const key = "API KEY GOES"
+const key = "3548273706736fa15fcc08e8983e328278635ca6"
 
 function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
@@ -71,8 +71,8 @@ function deleteFromWatchlist(id) {
     })
 }
 
-function addUser(name) {
-    if (usernames.includes(name)) console.log("user already Exists");
+function addSetUser(name) {
+    if (usernames.includes(name)) setCurrentUser(name);
     else
     fetch("http://localhost:3000/users", {
         method:"POST",
@@ -84,8 +84,11 @@ function addUser(name) {
     .then(res => res.json())
     .then(() => {
         setUsernames([...usernames, name])
+        setCurrentUser(name)
     })
 }
+
+console.log(currentUser)
 
 let filteredCryptos = cryptoData.filter(crypto => crypto.name.toLowerCase().includes(query.toLowerCase()) || crypto.currency.includes(query.toUpperCase()))
 
@@ -93,7 +96,7 @@ let cryptoArray = filteredCryptos.map(crypto => <Cryptos key={crypto.id} {...cry
 
     return(
         <div>
-            <Header query={query} setQuery={setQuery} usernames={usernames} addUser={addUser} />
+            <Header query={query} setQuery={setQuery} usernames={usernames} addSetUser={addSetUser} />
             {pageNumber > 1 || query !== "" ? null:(<WatchContainer trackedCryptos={trackedCryptos} deleteFromWatchlist={deleteFromWatchlist}/>)}
             <CryptoTable cryptoArray={cryptoArray} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
             <br></br>
