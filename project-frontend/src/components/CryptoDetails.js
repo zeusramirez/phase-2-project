@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 // import { useHistory } from 'react-router-dom'
 
-const key = "3548273706736fa15fcc08e8983e328278635ca6"
+const key = "API KEYE HERE"
 
 function CryptoDetails() {
 

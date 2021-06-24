@@ -1,10 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import WatchList from './WatchList'
+// import WatchList from './WatchList'
 
 function Cryptos(props) {
 
-    let {rank, currency, name, price, logo_url, market_cap, addToWatchList, id, watchlist, status } = props
+    let {rank, currency, name, price, logo_url, market_cap, addToWatchList, id, watchlist } = props
 
     let priceNum = parseFloat(price).toLocaleString('en-ENGL', { style: 'currency', currency: 'USD' })
     let dayChange = 0
@@ -30,6 +30,10 @@ function Cryptos(props) {
         : Math.abs(number) >= 1.0e+6
     
         ? `$${(Math.abs(number) / 1.0e+6).toFixed(2)}M`
+
+        : Math.abs(number) >= 1.0e+3
+
+        ? `$${(Math.abs(number) / 1.0e+3).toFixed(2)}K`
        
         : number.toLocaleString('en-ENGL', { style: 'currency', currency: 'USD' })
     
