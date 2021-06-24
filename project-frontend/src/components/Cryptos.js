@@ -3,40 +3,49 @@ import {Link} from 'react-router-dom'
 import WatchList from './WatchList'
 
 function Cryptos(props) {
-    const {rank, currency, name, price, logo_url, market_cap, addToWatchList, id, watchlist } = props
 
-    let priceNum = parseFloat(price)
-    let dayChange = parseFloat(props["1d"].price_change_pct * 100)
-    let marketCap = parseFloat(market_cap)
-    let volume = parseFloat(props["1d"].volume)
+    let {rank, currency, name, price, logo_url, market_cap, addToWatchList, id, watchlist, status } = props
+
+    let priceNum = parseFloat(price).toLocaleString('en-ENGL', { style: 'currency', currency: 'USD' })
+    let dayChange = 0
+    let volume = 0
+    let marketCap = 0
+    
+    
+    if (props["1d"] !== undefined || null) {
+        dayChange = parseFloat(props["1d"].price_change_pct * 100).toFixed(2)
+        volume = numberAbbreviation(parseFloat(props["1d"].volume))
+    }
+
+    if (market_cap !== undefined) {
+        marketCap = numberAbbreviation(parseFloat(market_cap).toFixed(2))
+    }
 
     function numberAbbreviation (number) {
-
         // Nine Zeroes for Billions
         return Math.abs(number) >= 1.0e+9
     
-        ? (Math.abs(number ) / 1.0e+9).toFixed(2) + "B"
+        ? `$${(Math.abs(number ) / 1.0e+9).toFixed(2)}B`
         // Six Zeroes for Millions 
         : Math.abs(number) >= 1.0e+6
     
-        ? (Math.abs(number) / 1.0e+6).toFixed(2) + "M"
-        // Three Zeroes for Thousands
-        : Math.abs(number) >= 1.0e+3
+        ? `$${(Math.abs(number) / 1.0e+6).toFixed(2)}M`
+       
+        : number.toLocaleString('en-ENGL', { style: 'currency', currency: 'USD' })
     
     }
 
-    
+    // {status === "inactive" ? }
 
     return (
        <tr>
-           <td>{rank}</td>
-           <td><img style={{width:"30px", height:"30px"}}src={logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> {currency}</td>
-           <td>${priceNum.toFixed(2)}</td>
-           <td>{dayChange.toFixed(2)}%</td>
-           <td>${numberAbbreviation(marketCap)}</td>
-           <td>${numberAbbreviation(volume)}</td>
-           {watchlist.includes(currency) ? null:(<td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>)
-           }
+           <td><span>{rank}</span></td>
+           <td><img style={{width:"30px", height:"30px"}}src={logo_url === "" ? "https://www.houseofcharity.org/wp-content/uploads/2019/07/White-Square.jpg": logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> <span>{currency}</span></td>
+           <td>{priceNum}</td>
+           <td><p>{dayChange}%</p></td>
+           <td><p>${marketCap}</p></td>
+           <td><p>{volume}</p></td>
+           {watchlist.includes(currency) ? null:(<td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>)}
        </tr>
     )
 }

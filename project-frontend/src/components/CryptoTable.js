@@ -8,7 +8,7 @@ function CryptoTable(props) {
             <table style={{width:"100%"}}>
             <tbody>
                 <tr>
-                    <th>#</th>
+                    <th>Rank #</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>1D Change</th>
