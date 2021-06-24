@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {Button} from "react-bootstrap/";
 // import WatchList from './WatchList'
 
 function Cryptos(props) {
@@ -44,12 +45,12 @@ function Cryptos(props) {
     return (
        <tr>
            <td><span>{rank}</span></td>
-           <td><img style={{width:"30px", height:"30px"}}src={logo_url === "" ? "https://www.houseofcharity.org/wp-content/uploads/2019/07/White-Square.jpg": logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> <span>{currency}</span></td>
+           <td colSpan="1"><img style={{width:"30px", height:"30px"}}src={logo_url === "" ? "https://www.houseofcharity.org/wp-content/uploads/2019/07/White-Square.jpg": logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> <span>{currency}</span></td>
            <td>{priceNum}</td>
            <td><p>{dayChange}%</p></td>
            <td><p>${marketCap}</p></td>
            <td><p>{volume}</p></td>
-           {watchlist.includes(currency) ? null:(<td><button onClick={() => addToWatchList(currency)}>Add to WatchList</button></td>)}
+           {watchlist.includes(currency) ? null:(<td><Button variant="success" onClick={() => addToWatchList(currency)}>Add to WatchList</Button></td>)}
        </tr>
     )
 }

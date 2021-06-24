@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom'
+import {Button} from "react-bootstrap/";
+
 
 function WatchList(props) {
 
@@ -43,7 +45,7 @@ function WatchList(props) {
         <td><p>{dayChange}%</p></td>
         <td><p>${marketCap}</p></td>
         <td><p>{volume}</p></td>
-        <td><button onClick={() => deleteFromWatchlist(id)}>Remove from WatchList</button></td>
+        <td><Button variant="danger" onClick={() => deleteFromWatchlist(id)}>Remove from WatchList</Button></td>
     </tr>
     )
 }

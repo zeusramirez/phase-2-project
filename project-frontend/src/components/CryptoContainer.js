@@ -4,7 +4,9 @@ import CryptoTable from './CryptoTable'
 import Cryptos from './Cryptos'
 import Header from './Header'
 
-const apiKey = "API KEY HERE"
+
+
+const apiKey = "3548273706736fa15fcc08e8983e328278635ca6"
 
 function CryptoContainer() {
 let [pageNumber, setPageNumber] = useState(1)
@@ -132,7 +134,7 @@ let [isLoggedIn, setLoggedIn] = useState(false)
         })
         .then(res => res.json())
         .then((data) => {
-            setUsers([...users, data.name])
+            setUsers([...users, data])
             setCurrentUser(data.name)
             setWatchlist(data.watchlist)
             setCurrentId(data.id)
@@ -169,7 +171,6 @@ let [isLoggedIn, setLoggedIn] = useState(false)
             }
         })
     }
-    console.log(filteredCryptos)
 
     let watchArray = []
     watchlist.forEach(currency => {
@@ -192,7 +193,8 @@ let [isLoggedIn, setLoggedIn] = useState(false)
     let displayedCryptos = query !== "" ? filteredCryptosWithComponents : cryptoArray
         return(
             <div>
-                <Header loggedIn={isLoggedIn} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut} currentUser={currentUser}/>
+                <Header loggedIn={isLoggedIn} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut} currentUser={currentUser} setPageNumber={setPageNumber}/>
+                <br></br>
                 {pageNumber > 1 || query !== "" || userId === 0 ? null :(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
                 <CryptoTable cryptoArray={displayedCryptos} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
                 <br></br>
