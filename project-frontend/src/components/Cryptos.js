@@ -48,7 +48,7 @@ function Cryptos(props) {
            <td colSpan="1"><img style={{width:"30px", height:"30px"}}src={logo_url === "" ? "https://www.houseofcharity.org/wp-content/uploads/2019/07/White-Square.jpg": logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> <span>{currency}</span></td>
            <td>{priceNum}</td>
            <td><p>{dayChange}%</p></td>
-           <td><p>${marketCap}</p></td>
+           <td><p>{marketCap}</p></td>
            <td><p>{volume}</p></td>
            {watchlist.includes(currency) ? <td><p>Watchlisted</p></td>:(<td><Button variant="success" onClick={() => addToWatchList(currency)}>Add to WatchList</Button></td>)}
        </tr>
