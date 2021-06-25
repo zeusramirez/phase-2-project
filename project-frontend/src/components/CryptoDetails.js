@@ -29,7 +29,7 @@ function CryptoDetails() {
     let currency = widget[0].currency
     return (
         <div>
-            <h1>{name} Details</h1>
+            <h1 className="detailsHeader">{name} Details</h1>
             <div className="nomics-ticker-widget" data-name={name} data-base={currency} data-quote="USD"></div>
             <Helmet>
                 <script src="https://widget.nomics.com/embed.js"></script>

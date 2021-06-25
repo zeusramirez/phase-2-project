@@ -15,6 +15,16 @@ code {
     monospace;
 }
 
+.nomics-ticker-widget-embedded {
+  margin: auto;
+  margin-top: 50px;
+}
+
+.detailsHeader {
+  margin-top: 150px;
+}
+
+
   /* body: '#363537',
   text: '#FAFAFA',
   background: '#999', */
