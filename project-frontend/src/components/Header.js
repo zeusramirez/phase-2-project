@@ -3,7 +3,7 @@ import {Button, InputGroup, FormControl, DropdownButton, Dropdown} from "react-b
 import NavBar from './NavBar';
 
 
-function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, setPageNumber }) {
+function Header({ setQuery, users, addSetUser, logOut, isLoggedIn, currentUser, setPageNumber, setCurrentUser, setLoggedIn }) {
 
     const [name, setName] = useState("")
     const [searchParam, setSearchParam] = useState("")
@@ -14,6 +14,7 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
         e.preventDefault()
         let name = e.target[0].value
         addSetUser(name)
+        handleHome()
         setName("")
     }
 
@@ -31,12 +32,12 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
  
     return (
         <>
-            <NavBar handleHome={handleHome} currentUser={currentUser} loggedIn={loggedIn} logOut={logOut}/>
+            <NavBar handleHome={handleHome} currentUser={currentUser} isLoggedIn={isLoggedIn} logOut={logOut}/>
             <br></br>
             <h1 style={{textDecorationLine: "underline"}}>Coin Tracker</h1>
             <br></br>
-            {loggedIn ? null:(<form onSubmit={e => handleSubmit(e)} name="user-login">
-                <label>User Login</label>
+            {isLoggedIn ? null:(<form onSubmit={e => handleSubmit(e)} name="user-login">
+                <label>User Login / Sign Up</label>
                 <InputGroup style={{width:"20%", margin:"auto"}} className="mb-3">
                     <FormControl
                     placeholder="User Login"
@@ -47,7 +48,7 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
                     />
                     <DropdownButton
                         variant="outline-secondary"
-                        title="Dropdown"
+                        title="Users"
                         id="input-group-dropdown-2"
                         align="end"
                     >

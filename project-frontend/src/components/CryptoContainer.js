@@ -6,27 +6,32 @@ import Header from './Header'
 
 
 
-const apiKey = "3548273706736fa15fcc08e8983e328278635ca6"
+const apiKey = process.env.REACT_APP_KEY
 
-function CryptoContainer() {
+function CryptoContainer(props) {
+const {isLoggedIn, currentUser, setLoggedIn, setCurrentUser}= props
 let [pageNumber, setPageNumber] = useState(1)
 let [cryptoData, setData] = useState([])
 let [allData, setAllData] = useState([])
 let [query, setQuery] = useState("")
 let [users, setUsers] = useState([])
-let [currentUser, setCurrentUser] = useState("")
+// let [currentUser, setCurrentUser] = useState("")
 let [userId, setCurrentId] = useState(0)
 let [watchlist, setWatchlist] = useState([])
-let [isLoggedIn, setLoggedIn] = useState(false)
+// let [isLoggedIn, setLoggedIn] = useState(false)
+
 
     function handlePageNumber(e) {
+        console.log(e.target.className)
         let value = e.target.value
         if (value === "next") {
         setPageNumber(pageNumber + 1)
         document.documentElement.scrollTop = 0;
+        e.target.blur()
         } else if (value=== "previous") {
             setPageNumber(pageNumber - 1)
             document.documentElement.scrollTop = 0;
+            e.target.blur()
         }
     }
     useEffect(()=> {
@@ -159,7 +164,6 @@ let [isLoggedIn, setLoggedIn] = useState(false)
         })
     }
 
-    // console.log(currentUser)
 
     //filtering the cryptos when a search query is made
 
@@ -180,7 +184,6 @@ let [isLoggedIn, setLoggedIn] = useState(false)
             }
         })   
     })
-    console.log(watchArray)
 
     if (isLoggedIn) {
         watchArray.sort((a,b) => a.rank - b.rank)
@@ -193,11 +196,11 @@ let [isLoggedIn, setLoggedIn] = useState(false)
     let displayedCryptos = query !== "" ? filteredCryptosWithComponents : cryptoArray
         return(
             <div>
-                <Header loggedIn={isLoggedIn} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut} currentUser={currentUser} setPageNumber={setPageNumber}/>
+                <Header isLoggedIn={isLoggedIn} setQuery={setQuery} users={users} setCurrentUser={setCurrentUser} addSetUser={addSetUser} setLoggedIn={setLoggedIn} logOut={logOut} currentUser={currentUser} setPageNumber={setPageNumber}/>
                 <br></br>
                 {pageNumber > 1 || query !== "" || userId === 0 ? null :(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
                 <br></br>
-                <CryptoTable cryptoArray={displayedCryptos} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
+                <CryptoTable cryptoArray={displayedCryptos} handlePageNumber={handlePageNumber} pageNumber={pageNumber} query={query}/>
                 <br></br>
                 <a href="https://nomics.com/">Crypto Market Cap And Pricing Data Provided By Nomics.</a>
             </div>

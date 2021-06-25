@@ -1,7 +1,8 @@
 import React  from "react";
-import {Table} from "react-bootstrap/";
+import {Table, Button } from "react-bootstrap/";
 function CryptoTable(props) {
-    const {pageNumber, handlePageNumber, cryptoArray} = props
+    const {pageNumber, handlePageNumber, cryptoArray, query} = props
+    console.log(query.length)
     return (
         <div>
             <h2>All Coins</h2>
@@ -20,8 +21,7 @@ function CryptoTable(props) {
                 {cryptoArray}
             </tbody>
             </Table>
-            {pageNumber === 1 ? null: (<button value="previous" onClick={e=>handlePageNumber(e)}>Previous Page</button>)}
-            <button value="next" onClick={e=>handlePageNumber(e)}>Next Page</button>
+            {query.length > 0 ? null: (<>{pageNumber === 1 ? null:(<Button variant="secondary" size="sm" value="previous" onClick={e=>handlePageNumber(e)}>Previous Page</Button >)} <Button variant="secondary" size="sm" value="next" onClick={e=>handlePageNumber(e)}>Next Page</Button ></>)}
         </div>
     )
 }

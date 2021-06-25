@@ -50,7 +50,7 @@ function Cryptos(props) {
            <td><p>{dayChange}%</p></td>
            <td><p>${marketCap}</p></td>
            <td><p>{volume}</p></td>
-           {watchlist.includes(currency) ? null:(<td><Button variant="success" onClick={() => addToWatchList(currency)}>Add to WatchList</Button></td>)}
+           {watchlist.includes(currency) ? <td><p>Watchlisted</p></td>:(<td><Button variant="success" onClick={() => addToWatchList(currency)}>Add to WatchList</Button></td>)}
        </tr>
     )
 }
