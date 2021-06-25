@@ -66,7 +66,7 @@ let [isLoggedIn, setLoggedIn] = useState(false)
     },[])
     
     function addToWatchList(currency) {
-        if (!watchlist.includes(currency)) {
+        if (!watchlist.includes(currency) && isLoggedIn) {
             fetch(`http://localhost:3000/users/${userId}`,{
                 method: "PATCH",
                 headers: {"Content-Type": "application/json"},
@@ -196,6 +196,7 @@ let [isLoggedIn, setLoggedIn] = useState(false)
                 <Header loggedIn={isLoggedIn} setQuery={setQuery} users={users} addSetUser={addSetUser} logOut={logOut} currentUser={currentUser} setPageNumber={setPageNumber}/>
                 <br></br>
                 {pageNumber > 1 || query !== "" || userId === 0 ? null :(<WatchContainer user={currentUser} watchArray={watchArray} deleteFromWatchlist={deleteFromWatchlist}/>)}
+                <br></br>
                 <CryptoTable cryptoArray={displayedCryptos} handlePageNumber={handlePageNumber} pageNumber={pageNumber}/>
                 <br></br>
                 <a href="https://nomics.com/">Crypto Market Cap And Pricing Data Provided By Nomics.</a>

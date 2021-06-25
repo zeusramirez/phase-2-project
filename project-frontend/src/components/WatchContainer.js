@@ -10,7 +10,7 @@ function WatchContainer(props) {
 
     return(
         <div>
-            <h2 style={{textAlign:"left"}}>{user === "" ? null: (`${user}'s`)} Watchlisted Coins</h2>
+            <h2 style={{textAlign:"center"}}>{user === "" ? null: (`${user}'s`)} Watchlisted Coins</h2>
             <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>

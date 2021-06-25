@@ -19,8 +19,8 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
 
     function handleSearch(e) {
         e.preventDefault()
-        setQuery(e.target[0].value)
         setSearchParam("")
+        setQuery(e.target[0].value)
         // setName("")
     }
 
@@ -32,7 +32,9 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
     return (
         <>
             <NavBar handleHome={handleHome} currentUser={currentUser} loggedIn={loggedIn} logOut={logOut}/>
+            <br></br>
             <h1 style={{textDecorationLine: "underline"}}>Coin Tracker</h1>
+            <br></br>
             {loggedIn ? null:(<form onSubmit={e => handleSubmit(e)} name="user-login">
                 <label>User Login</label>
                 <InputGroup style={{width:"20%", margin:"auto"}} className="mb-3">
@@ -52,32 +54,23 @@ function Header({ setQuery, users, addSetUser, logOut, loggedIn, currentUser, se
                         {usernameTags}
                     </DropdownButton>
                     <Button type="submit" variant="outline-secondary">Login</Button>
-                    {/* <InputGroup.Append>
-                    <Button type="submit" variant="outline-secondary">Login</Button>
-                    </InputGroup.Append> */}
                 </InputGroup>
-                {/* <input list="users" type="text" placeholder="Login To See List" value={name} onChange={e => setName(e.target.value)}></input>
-                    <datalist id="users">
-                        {usernameOptionTags}
-                    </datalist>
-                    <Button variant="success" type="submit">Log In</Button> */}
             </form>)
             }
-            <br></br>
             <form onSubmit={e => handleSearch(e)} name="crypto-search" >
                 <label>Crypto Seach</label>
-                <InputGroup style={{width:"20%", margin:"auto"}} value={searchParam} onChange={e => setSearchParam(e.target.value)} className="mb-3">
+                <InputGroup style={{width:"20%", margin:"auto"}} className="mb-3">
                     <FormControl
                     placeholder="Search Cryptos"
                     aria-label="Search Cryptos"
                     aria-describedby="basic-addon2"
+                    value={searchParam}
+                    onChange={e => setSearchParam(e.target.value)}
                     />
                     <InputGroup.Append>
                     <Button type="submit" variant="outline-secondary">Search</Button>
                     </InputGroup.Append>
                 </InputGroup>
-                {/* <input type="text" placeholder="Search Cryptos" value={searchParam} onChange={e => setSearchParam(e.target.value)}></input> */}
-                {/* <Button type="submit">Search</Button> */}
             </form>
         </>
     )
