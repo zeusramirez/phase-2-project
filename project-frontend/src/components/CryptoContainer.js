@@ -22,7 +22,7 @@ let [watchlist, setWatchlist] = useState([])
 
 
     function handlePageNumber(e) {
-        console.log(e.target.className)
+        // console.log(e.target.className)
         let value = e.target.value
         if (value === "next") {
         setPageNumber(pageNumber + 1)
@@ -34,6 +34,19 @@ let [watchlist, setWatchlist] = useState([])
             e.target.blur()
         }
     }
+
+    // let timerName
+    // if (isLoggedIn && pageNumber === 1) {
+    //     timerName = setInterval(() => {
+    //         fetch(`https://api.nomics.com/v1/currencies/ticker?key=${apiKey}&status=active`)
+    //         .then(res => res.json())
+    //         .then(data => setAllData(data))
+    //         console.log("Update")
+    //     }, 8000)
+    // } else if (isLoggedIn && pageNumber > 1) {
+    //     clearInterval(timerName)
+    // }
+
     useEffect(()=> {
         setTimeout(()=> {
             fetch(`https://api.nomics.com/v1/currencies/ticker?key=${apiKey}&status=active`)
@@ -43,16 +56,32 @@ let [watchlist, setWatchlist] = useState([])
         },[])
 
     useEffect(()=> {
-        fetch(`https://api.nomics.com/v1/currencies/ticker?key=${apiKey}&status=active&per-page=100&page=${pageNumber}`)
-        .then(res => res.json())
-        .then(data => setData(data))
+            fetch(`https://api.nomics.com/v1/currencies/ticker?key=${apiKey}&status=active&per-page=100&page=${pageNumber}`)
+            .then(res => res.json())
+            .then(data => {
+                setData(data)
+                // updatePrice()
+            })
+            // console.log("Initial!",cryptoData, pageNumber)
     },[pageNumber])
 
-    // useEffect(()=> {
-    //     fetch("http://localhost:3000/user/{}")
-    //     .then(res => res.json())
-    //     .then(data => setTracked(data))
-    // },[isLoggedIn])
+    console.log(pageNumber)
+
+    useEffect(()=> {
+        const timerID = setInterval(()=> {
+            fetch(`https://api.nomics.com/v1/currencies/ticker?key=${apiKey}&status=active&per-page=100&page=${pageNumber}`)
+            .then(res => res.json())
+            .then(data => {
+                setData(data)
+                // setPageNumber(pageNumber)
+            })
+            console.log("Update!!")
+        }, 5000)
+
+        return function cleanup() {
+            clearInterval(timerID)
+        }
+    }, [pageNumber, query])
 
     useEffect(() => {
         fetch("http://localhost:3000/users")
@@ -157,10 +186,12 @@ let [watchlist, setWatchlist] = useState([])
         })
         .then(res => res.json())
         .then(data => {
+            setQuery("")
             setCurrentId(0)
             setCurrentUser("")
             setWatchlist([])
             setLoggedIn(data.loggedIn)
+            setPageNumber(1)
         })
     }
 

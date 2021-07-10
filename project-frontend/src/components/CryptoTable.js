@@ -2,7 +2,6 @@ import React  from "react";
 import {Table, Button } from "react-bootstrap/";
 function CryptoTable(props) {
     const {pageNumber, handlePageNumber, cryptoArray, query} = props
-    console.log(query.length)
     return (
         <div>
             <h2>All Coins</h2>

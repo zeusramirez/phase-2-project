@@ -16,6 +16,7 @@ function Header({ setQuery, users, addSetUser, logOut, isLoggedIn, currentUser, 
         addSetUser(name)
         handleHome()
         setName("")
+        setSearchParam("")
     }
 
     function handleSearch(e) {
@@ -59,7 +60,7 @@ function Header({ setQuery, users, addSetUser, logOut, isLoggedIn, currentUser, 
             </form>)
             }
             <form onSubmit={e => handleSearch(e)} name="crypto-search" >
-                <label>Crypto Seach</label>
+                <label>Crypto Search</label>
                 <InputGroup style={{width:"20%", margin:"auto"}} className="mb-3">
                     <FormControl
                     placeholder="Search Cryptos"

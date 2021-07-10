@@ -9,12 +9,14 @@ function Cryptos(props) {
 
     let priceNum = parseFloat(price).toLocaleString('en-ENGL', { style: 'currency', currency: 'USD' })
     let dayChange = 0
+    let redGreen = 'red'
     let volume = 0
     let marketCap = 0
     
     
     if (props["1d"] !== undefined || null) {
         dayChange = parseFloat(props["1d"].price_change_pct * 100).toFixed(2)
+        if (dayChange > 0) redGreen = 'lightgreen'
         volume = numberAbbreviation(parseFloat(props["1d"].volume))
     }
 
@@ -47,8 +49,8 @@ function Cryptos(props) {
            <td><span>{rank}</span></td>
            <td colSpan="1"><img style={{width:"30px", height:"30px"}}src={logo_url === "" ? "https://www.houseofcharity.org/wp-content/uploads/2019/07/White-Square.jpg": logo_url} alt={name}/> <span style={{fontWeight: "bold"}}><Link to={`/details/${id}`}>{name}</Link></span> <span>{currency}</span></td>
            <td>{priceNum}</td>
-           <td><p>{dayChange}%</p></td>
-           <td><p>${marketCap}</p></td>
+           <td><p style={{color : redGreen}}>{dayChange}%</p></td>
+           <td><p>{marketCap}</p></td>
            <td><p>{volume}</p></td>
            {watchlist.includes(currency) ? <td><p>Watchlisted</p></td>:(<td><Button variant="success" onClick={() => addToWatchList(currency)}>Add to WatchList</Button></td>)}
        </tr>
